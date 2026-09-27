@@ -1,146 +1,339 @@
-/* =====================================================
-   ADMIN-SPECIFIC STYLES
-   ===================================================== */
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#f4f5f7">
+    <title>Admin Dashboard — ClientHub</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+    <div class="app-shell admin-shell">
 
-.admin-tabs {
-    display: flex;
-    gap: 4px;
-    background-color: var(--bg-card);
-    border: 1px solid var(--border-light);
-    border-radius: var(--r-pill);
-    padding: 4px;
-    margin-bottom: 24px;
-    width: fit-content;
-    max-width: 100%;
-    overflow-x: auto;
-    box-shadow: var(--shadow-sm);
-}
+        <header class="platform-header">
+            <div class="platform-header-inner">
+                <a href="./" class="brand" aria-label="ClientHub home">
+                    <div class="brand-mark"><i class="fa-solid fa-bolt"></i></div>
+                    <div class="brand-text">
+                        <strong>ClientHub</strong>
+                        <span>Admin Console</span>
+                    </div>
+                </a>
+                <nav class="platform-nav" aria-label="Admin navigation">
+                    <a href="./" class="nav-link"><i class="fa-solid fa-arrow-left"></i> <span>Public Site</span></a>
+                </nav>
+            </div>
+        </header>
 
-.admin-tab {
-    padding: 8px 16px;
-    border-radius: var(--r-pill);
-    color: var(--text-secondary);
-    font-size: 13.5px;
-    font-weight: 600;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    white-space: nowrap;
-    transition: all 0.15s ease;
-    cursor: pointer;
-}
-.admin-tab:hover { color: var(--text-primary); }
-.admin-tab.active {
-    background-color: var(--color-blue);
-    color: white;
-}
-.admin-tab i { font-size: 12px; }
+        <main class="admin-content">
 
-@media (max-width: 600px) {
-    .admin-tab span, .admin-tab { padding: 8px 12px; font-size: 12.5px; }
-}
+            <!-- Tabs -->
+            <div class="admin-tabs" role="tablist" aria-label="Admin sections">
+                <button class="admin-tab active" data-tab="dashboard"><i class="fa-solid fa-gauge"></i> Dashboard</button>
+                <button class="admin-tab" data-tab="clients"><i class="fa-solid fa-users"></i> Clients</button>
+                <button class="admin-tab" data-tab="posts"><i class="fa-regular fa-newspaper"></i> Posts</button>
+                <button class="admin-tab" data-tab="billing"><i class="fa-solid fa-indian-rupee-sign"></i> Billing</button>
+            </div>
 
-.admin-panel { display: none; }
-.admin-panel.active { display: block; }
+            <!-- ===== DASHBOARD TAB ===== -->
+            <section class="admin-panel active" data-panel="dashboard">
+                <div class="admin-page-title">
+                    <div>
+                        <h1>Dashboard</h1>
+                        <p>Overview of your multi-client platform.</p>
+                    </div>
+                    <div class="admin-actions">
+                        <button class="btn btn-primary" id="addClientBtn"><i class="fa-solid fa-plus"></i> New Client</button>
+                        <button class="btn btn-secondary" id="addPostBtn"><i class="fa-regular fa-newspaper"></i> Add Post</button>
+                    </div>
+                </div>
 
-@media (max-width: 480px) {
-    .admin-page-title h1 { font-size: 22px; }
-    .admin-actions .btn { font-size: 13px; padding: 10px 14px; }
-}
+                <div class="admin-grid">
+                    <div class="stat-card">
+                        <div class="stat-card-icon blue"><i class="fa-solid fa-users"></i></div>
+                        <div class="stat-card-info"><strong id="dashTotalClients">0</strong><span>Total Clients</span></div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-icon green"><i class="fa-solid fa-circle-check"></i></div>
+                        <div class="stat-card-info"><strong id="dashActiveClients">0</strong><span>Active Clients</span></div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-icon orange"><i class="fa-regular fa-newspaper"></i></div>
+                        <div class="stat-card-info"><strong id="dashTotalPosts">0</strong><span>Total Posts</span></div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-icon purple"><i class="fa-regular fa-calendar"></i></div>
+                        <div class="stat-card-info"><strong id="dashPostsThisMonth">0</strong><span>Posts This Month</span></div>
+                    </div>
+                </div>
 
-/* Form grid (two columns) */
-.form-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-}
+                <div class="admin-grid three-col" style="margin-top: 16px;">
+                    <div class="stat-card">
+                        <div class="stat-card-icon blue"><i class="fa-solid fa-indian-rupee-sign"></i></div>
+                        <div class="stat-card-info"><strong id="dashRevenue">₹0</strong><span>Estimated Revenue</span></div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-icon green"><i class="fa-solid fa-tags"></i></div>
+                        <div class="stat-card-info"><strong id="dashOffers">0</strong><span>Active Offers</span></div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-icon orange"><i class="fa-solid fa-handshake"></i></div>
+                        <div class="stat-card-info"><strong id="dashBillable">0</strong><span>Billable Posts</span></div>
+                    </div>
+                </div>
 
-@media (max-width: 480px) {
-    .form-grid { grid-template-columns: 1fr; gap: 0; }
-}
+                <div class="admin-section">
+                    <div class="admin-section-header">
+                        <h2>Recent Activity</h2>
+                    </div>
+                    <div class="admin-table-wrap">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>Client</th>
+                                    <th>Activity</th>
+                                    <th>Type</th>
+                                    <th>Date</th>
+                                </tr>
+                            </thead>
+                            <tbody id="dashRecentBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
 
-.form-field select,
-.form-field textarea {
-    width: 100%;
-    padding: 11px 14px;
-    border: 1px solid var(--border-medium);
-    border-radius: var(--r-md);
-    font-family: inherit;
-    font-size: 14px;
-    color: var(--text-primary);
-    background-color: var(--bg-soft);
-    transition: all 0.15s ease;
-    resize: vertical;
-}
-.form-field select:focus,
-.form-field textarea:focus {
-    outline: none;
-    border-color: var(--color-blue);
-    background-color: var(--bg-card);
-    box-shadow: 0 0 0 3px var(--color-blue-soft);
-}
+            <!-- ===== CLIENTS TAB ===== -->
+            <section class="admin-panel" data-panel="clients">
+                <div class="admin-page-title">
+                    <div>
+                        <h1>Clients</h1>
+                        <p>Manage all client profiles on the platform.</p>
+                    </div>
+                    <div class="admin-actions">
+                        <button class="btn btn-primary" id="addClientBtn2"><i class="fa-solid fa-plus"></i> New Client</button>
+                    </div>
+                </div>
 
-.checkbox-field {
-    display: flex !important;
-    align-items: center;
-    gap: 10px;
-    padding: 8px 0;
-    cursor: pointer;
-}
-.checkbox-field span {
-    display: inline !important;
-    margin-bottom: 0 !important;
-    font-size: 14px !important;
-    color: var(--text-primary) !important;
-    text-transform: none !important;
-    letter-spacing: normal !important;
-    font-weight: 500 !important;
-}
-.checkbox-field input[type="checkbox"] {
-    width: 18px;
-    height: 18px;
-    accent-color: var(--color-blue);
-    cursor: pointer;
-}
+                <div class="admin-section">
+                    <div class="admin-section-header">
+                        <h2>All Clients (<span id="clientCount">0</span>)</h2>
+                    </div>
+                    <div class="admin-table-wrap">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>Business</th>
+                                    <th>Category</th>
+                                    <th>Location</th>
+                                    <th>Posts</th>
+                                    <th>Status</th>
+                                    <th style="text-align:right">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="clientsTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
 
-/* View client details inside modal */
-.view-client-detail {
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-}
-.view-client-row {
-    display: grid;
-    grid-template-columns: 110px 1fr;
-    gap: 12px;
-    padding: 8px 0;
-    border-bottom: 1px solid var(--border-light);
-    font-size: 13.5px;
-}
-.view-client-row:last-child { border-bottom: none; }
-.view-client-row strong {
-    color: var(--text-muted);
-    font-weight: 600;
-    font-size: 12px;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-}
-.view-client-row span { color: var(--text-primary); word-break: break-word; }
+            <!-- ===== POSTS TAB ===== -->
+            <section class="admin-panel" data-panel="posts">
+                <div class="admin-page-title">
+                    <div>
+                        <h1>Posts</h1>
+                        <p>Add, edit, and manage posts for all clients.</p>
+                    </div>
+                    <div class="admin-actions">
+                        <button class="btn btn-primary" id="addPostBtn2"><i class="fa-solid fa-plus"></i> New Post</button>
+                    </div>
+                </div>
 
-.view-client-header {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    padding-bottom: 14px;
-    border-bottom: 1px solid var(--border-light);
-    margin-bottom: 6px;
-}
-.view-client-header img {
-    width: 64px;
-    height: 64px;
-    border-radius: var(--r-pill);
-    object-fit: cover;
-    border: 2px solid var(--border-light);
-}
-.view-client-header h4 { font-size: 17px; margin-bottom: 2px; }
-.view-client-header span { font-size: 12.5px; color: var(--text-muted); }
+                <div class="admin-section">
+                    <div class="admin-section-header">
+                        <h2>All Posts (<span id="postCount">0</span>)</h2>
+                    </div>
+                    <div class="admin-table-wrap">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Client</th>
+                                    <th>Type</th>
+                                    <th>Date</th>
+                                    <th>Status</th>
+                                    <th style="text-align:right">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="postsTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===== BILLING TAB ===== -->
+            <section class="admin-panel" data-panel="billing">
+                <div class="admin-page-title">
+                    <div>
+                        <h1>Billing</h1>
+                        <p>Configure pricing and view per-client billable post counts.</p>
+                    </div>
+
+                </div>
+
+                <div class="admin-grid">
+                    <div class="admin-section" style="margin-top:0">
+                        <div class="admin-section-header"><h2>Configuration</h2></div>
+                        <div class="config-row">
+                            <label for="pricePerPost">Price per post (₹)</label>
+                            <input type="number" id="pricePerPost" min="0" step="50" value="500">
+                        </div>
+                        <div class="config-row">
+                            <label>Currency symbol</label>
+                            <input type="text" id="currencySymbol" value="₹" maxlength="3" style="width:80px">
+                        </div>
+                    </div>
+
+                    <div class="admin-section" style="margin-top:0">
+                        <div class="admin-section-header"><h2>Totals</h2></div>
+                        <div class="config-row">
+                            <label>Total billable posts (all clients)</label>
+                            <strong id="totalBillablePosts">0</strong>
+                        </div>
+                        <div class="config-row">
+                            <label>Estimated total revenue</label>
+                            <span class="billing-amount" id="totalRevenue">₹0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="admin-section">
+                    <div class="admin-section-header"><h2>Per-Client Billing</h2></div>
+                    <div class="admin-table-wrap">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>Client</th>
+                                    <th>Total Posts</th>
+                                    <th>Posts This Month</th>
+                                    <th>Billable Posts</th>
+                                    <th style="text-align:right">Estimated Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody id="billingTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- ===== CLIENT FORM MODAL ===== -->
+    <div class="modal-overlay" id="clientFormModal" aria-hidden="true">
+        <div class="modal modal-form" role="dialog" aria-modal="true">
+            <div class="modal-header">
+                <h3 id="clientFormTitle">New Client</h3>
+                <button class="modal-close" data-close="clientFormModal" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form class="modal-body" id="clientForm">
+                <input type="hidden" id="clientIdField" value="">
+                <label class="form-field"><span>Business Name *</span><input type="text" id="cfName" required></label>
+                <div class="form-grid">
+                    <label class="form-field"><span>Category *</span>
+                        <select id="cfCategory" required>
+                            <option value="Interior Design">Interior Design</option>
+                            <option value="Construction">Construction</option>
+                            <option value="Technology">Technology</option>
+                            <option value="Real Estate">Real Estate</option>
+                            <option value="Engineering">Engineering</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </label>
+                    <label class="form-field"><span>Location *</span><input type="text" id="cfLocation" required placeholder="City, State"></label>
+                </div>
+                <label class="form-field"><span>Description</span><textarea id="cfDescription" rows="2"></textarea></label>
+                <label class="form-field"><span>Logo / Photo URL</span><input type="url" id="cfLogo" placeholder="https://..."></label>
+                <div class="form-grid">
+                    <label class="form-field"><span>Phone</span><input type="tel" id="cfPhone"></label>
+                    <label class="form-field"><span>Email</span><input type="email" id="cfEmail"></label>
+                </div>
+                <div class="form-grid">
+                    <label class="form-field"><span>Website</span><input type="url" id="cfWebsite"></label>
+                    <label class="form-field"><span>WhatsApp</span><input type="tel" id="cfWhatsapp" placeholder="+91..."></label>
+                </div>
+                <label class="form-field"><span>Tagline</span><input type="text" id="cfTagline" placeholder="One-line headline"></label>
+                <label class="form-field"><span>About / Description</span><textarea id="cfAbout" rows="3"></textarea></label>
+                <div class="form-grid">
+                    <label class="form-field"><span>Years of Experience</span><input type="text" id="cfYears" placeholder="e.g. 10+"></label>
+                    <label class="form-field"><span>Projects Completed</span><input type="text" id="cfProjects" placeholder="e.g. 150+"></label>
+                </div>
+                <label class="form-field checkbox-field">
+                    <input type="checkbox" id="cfActive" checked>
+                    <span>Active (visible in directory)</span>
+                </label>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" data-close="clientFormModal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Client</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ===== POST FORM MODAL ===== -->
+    <div class="modal-overlay" id="postFormModal" aria-hidden="true">
+        <div class="modal modal-form" role="dialog" aria-modal="true">
+            <div class="modal-header">
+                <h3 id="postFormTitle">New Post</h3>
+                <button class="modal-close" data-close="postFormModal" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form class="modal-body" id="postForm">
+                <input type="hidden" id="postIdField" value="">
+                <label class="form-field"><span>Client *</span>
+                    <select id="pfClient" required></select>
+                </label>
+                <label class="form-field"><span>Post Type *</span>
+                    <select id="pfType" required>
+                        <option value="post">Post</option>
+                        <option value="story">Story</option>
+                        <option value="offer">Offer</option>
+                    </select>
+                </label>
+                <label class="form-field"><span>Title *</span><input type="text" id="pfTitle" required></label>
+                <label class="form-field"><span>Description</span><textarea id="pfDescription" rows="3"></textarea></label>
+                <label class="form-field" id="pfImageField"><span>Image URL</span><input type="url" id="pfImage" placeholder="https://..."></label>
+                <div class="form-grid">
+                    <label class="form-field"><span>Date</span><input type="date" id="pfDate"></label>
+                    <label class="form-field" id="pfBadgeField" hidden><span>Badge (for offers)</span><input type="text" id="pfBadge" placeholder="e.g. 20% OFF"></label>
+                </div>
+                <label class="form-field" id="pfValidityField" hidden><span>Validity (for offers)</span><input type="text" id="pfValidity" placeholder="e.g. Valid till June 30"></label>
+                <label class="form-field checkbox-field">
+                    <input type="checkbox" id="pfPublished" checked>
+                    <span>Publish immediately</span>
+                </label>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" data-close="postFormModal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Post</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- ===== VIEW CLIENT MODAL ===== -->
+    <div class="modal-overlay" id="viewClientModal" aria-hidden="true">
+        <div class="modal" role="dialog" aria-modal="true">
+            <div class="modal-header">
+                <h3>Client Details</h3>
+                <button class="modal-close" data-close="viewClientModal" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body" id="viewClientBody"></div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <script src="admin.js"></script>
+</body>
+</html>
