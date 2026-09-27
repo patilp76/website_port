@@ -293,7 +293,9 @@ const getPosts   = () => storage.get(STORAGE_KEYS.posts)   || [];
 const getSettings= () => storage.get(STORAGE_KEYS.settings) || DEFAULT_SETTINGS;
 
 const getClient = (id) => getClients().find(c => c.id === Number(id));
-const getClientPosts = (id) => getPosts().filter(p => p.clientId === Number(id) && p.published !== false);
+const getClientPosts = (id) => getPosts()
+    .filter(p => p.clientId === Number(id) && p.published !== false)
+    .sort((a, b) => (Date.parse(b.createdAt || b.date || '') || 0) - (Date.parse(a.createdAt || a.date || '') || 0));
 
 /* ---------- APP / VIEW STATE ---------- */
 let appState = {
@@ -330,6 +332,12 @@ function setUrl(view, clientId) {
 
 window.addEventListener('popstate', () => {
     routeFromUrl();
+});
+
+window.addEventListener('storage', (event) => {
+    if (event.key === STORAGE_KEYS.clients || event.key === STORAGE_KEYS.posts) {
+        routeFromUrl();
+    }
 });
 
 function routeFromUrl() {

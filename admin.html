@@ -13,7 +13,20 @@
     <link rel="stylesheet" href="admin.css">
 </head>
 <body>
-    <div class="app-shell admin-shell">
+    <main class="admin-login" id="adminLogin">
+        <form class="admin-login-card" id="adminLoginForm">
+            <div class="admin-login-mark"><i class="fa-solid fa-lock"></i></div>
+            <h1>Admin sign in</h1>
+            <p>Enter the demo password to open the admin console.</p>
+            <label for="adminPassword">Password</label>
+            <input class="admin-login-input" id="adminPassword" type="password" autocomplete="current-password" required>
+            <p class="admin-login-error" id="adminLoginError" role="alert" hidden>Incorrect password. Please try again.</p>
+            <button class="btn btn-primary admin-login-submit" type="submit">Sign in</button>
+            <small>POC access gate only. Do not use this for a live site.</small>
+        </form>
+    </main>
+
+    <div class="app-shell admin-shell is-locked" id="adminApp">
 
         <header class="platform-header">
             <div class="platform-header-inner">
@@ -26,6 +39,7 @@
                 </a>
                 <nav class="platform-nav" aria-label="Admin navigation">
                     <a href="./" class="nav-link"><i class="fa-solid fa-arrow-left"></i> <span>Public Site</span></a>
+                    <button class="nav-link admin-logout" id="adminLogoutBtn" type="button"><i class="fa-solid fa-lock"></i> <span>Lock Admin</span></button>
                 </nav>
             </div>
         </header>

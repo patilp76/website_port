@@ -9,6 +9,8 @@ const STORAGE_KEYS = {
     settings:'mp_settings'
 };
 
+const DEMO_ADMIN_PASSWORD = 'admin123';
+
 const storage = {
     get(key) { try { return JSON.parse(localStorage.getItem(key)) || null; } catch (e) { return null; } },
     set(key, val) { try { localStorage.setItem(key, JSON.stringify(val)); } catch (e) {} }
@@ -536,8 +538,31 @@ function bindEvents() {
    INIT
    ===================================================== */
 function init() {
+    $('#adminLoginForm').addEventListener('submit', handleAdminLogin);
+    $('#adminLogoutBtn').addEventListener('click', lockAdmin);
     bindEvents();
+    $('#adminPassword').focus();
+}
+
+function handleAdminLogin(event) {
+    event.preventDefault();
+    if ($('#adminPassword').value !== DEMO_ADMIN_PASSWORD) {
+        $('#adminLoginError').hidden = false;
+        $('#adminPassword').select();
+        return;
+    }
+
+    $('#adminLogin').hidden = true;
+    $('#adminLoginError').hidden = true;
+    $('#adminApp').classList.remove('is-locked');
     renderAll();
+}
+
+function lockAdmin() {
+    $('#adminApp').classList.add('is-locked');
+    $('#adminLogin').hidden = false;
+    $('#adminPassword').value = '';
+    $('#adminPassword').focus();
 }
 
 document.addEventListener('DOMContentLoaded', init);
